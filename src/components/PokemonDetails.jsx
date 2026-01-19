@@ -1,34 +1,26 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 function PokemonDetails() {
-  console.log("pokemon rendered");
-  const { id } = useParams();
+  const { id: pokemonId } = useParams();
   const [pokemon, setPokemon] = useState(null);
   const [description, setDescription] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+      const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`);
       const data = await res.json();
       setPokemon(data);
       console.log(data);
 
       const speciesRes = await fetch(
-        `https://pokeapi.co/api/v2/pokemon-species/${id}`
+        `https://pokeapi.co/api/v2/pokemon-species/${pokemonId}`
       );
       const speciesData = await speciesRes.json();
-      const enFlavor = speciesData.flavor_text_entries.find(
-        (entry) => entry.language.name === "en"
-      );
-
-      setDescription(
-        enFlavor
-          ? enFlavor.flavor_text.replace(/\f/g, " ")
-          : "No description available"
-      );
+      const enFlavor = speciesData.flavor_text_entries[0].flavor_text;
+      setDescription(enFlavor);
     };
     fetchData();
-  }, [id]);
+  }, [pokemonId]);
 
   if (!pokemon) return <p>loading........</p>;
 
