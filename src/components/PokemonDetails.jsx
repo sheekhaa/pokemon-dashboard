@@ -13,7 +13,7 @@ function PokemonDetails() {
       console.log(data);
 
       const speciesRes = await fetch(
-        `https://pokeapi.co/api/v2/pokemon-species/${pokemonId}`
+        `https://pokeapi.co/api/v2/pokemon-species/${pokemonId}`,
       );
       const speciesData = await speciesRes.json();
       const enFlavor = speciesData.flavor_text_entries[0].flavor_text;
